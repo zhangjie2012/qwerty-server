@@ -16,9 +16,12 @@ MySQL：
 
     pip3 install -r requirements.txt
 
+配置文件，默认读取位置为 `/etc/qwerty.yml`。可通过环境变量 `CONFIG_FILE` 指定目录。
+
 启动 server：
 
-    DB_NAME=qwerty DB_USER=root DB_PASSWD=qwerty-pwd DB_HOST=0.0.0.0 DB_PORT=3306 ./manage.py runserver
+    ./manage.py runserver
+
 
 ## 生产环境
 

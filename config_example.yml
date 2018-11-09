@@ -1,0 +1,10 @@
+site:
+  title: 'qwerty'
+  copyright: '2018'
+  ICP: ''
+db:
+  name: 'qwerty'
+  user: 'root'
+  passwd: 'qwerty-pwd'
+  host: '127.0.0.1'
+  port: '3306'
