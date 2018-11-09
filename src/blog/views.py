@@ -3,7 +3,9 @@ import json
 import frontmatter
 
 from datetime import datetime
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 from utils.logger import logger
 from utils.http_tools import SuccessResponse, ParamInvalidResponse
 from .models import Category, Article
@@ -85,3 +87,41 @@ def import_jekyll_content(request):
             logger.info('create article|%s|%s', article.title, article.slug)
 
     return SuccessResponse()
+
+
+@require_GET
+def query_blogs(request):
+    page = int(request.GET.get('page', 1))
+    per_count = int(request.GET.get('per_count', 10))
+
+    # param error auto fix
+    page = 1 if page < 1 else page
+    per_count = 10 if per_count < 1 else per_count
+
+    article_qs = Article.objects.exclude(draft=True).values(
+        'category__name', 'category__slug',
+        'title', 'slug', 'abstract', 'publish_dt'
+    )
+    paginator = Paginator(article_qs, per_count)
+    page_article = paginator.get_page(page)
+
+    article_list = []
+    for article in page_article.object_list:
+        article_list.append({
+            'category': {
+                'name': article['category__name'],
+                'slug': article['category__slug'],
+            },
+            'title': article['title'],
+            'slug': article['slug'],
+            'abstract': article['abstract'],
+            'publish_dt': article['publish_dt'],
+        })
+
+    logger.debug('query blogs|%d|%d|%d', page, per_count, len(article_list))
+
+    return SuccessResponse({
+        'article_list': article_list,
+        'current_page_num': page_article.number,
+        'total_pages': paginator.num_pages,
+    })
