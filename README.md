@@ -26,4 +26,4 @@ MySQL：
 ### 从 Jekyll 导入博客到 qwerty 中
 
 1. 将 `jekyll/_posts` 置于 qwerty server 可被访问的目录下
-2. `POST` 调用 API `/blog/__import_jekyll_content` 执行操作操作，request body 为 `{"dst_dir": "_posts path"}`
+2. `POST` 调用 API `/blog/__import_jekyll_content` 执行导入操作，request body 为 `{"dst_dir": "_posts path"}`
