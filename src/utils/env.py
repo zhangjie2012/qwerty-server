@@ -1,15 +1,25 @@
 import os
+import yaml
+
+config_data = {}
+
+
+def load_config():
+    global config_data
+
+    config_path = os.environ.get('CONFIG_FILE', '/etc/qwerty.yml')
+    s = open(config_path, 'r')
+    config_data = yaml.load(s)
 
 
 def get_db_config():
-    db_name = os.environ.get('DB_NAME', 'qwerty')
-    db_user = os.environ.get('DB_USER', 'qwerty_user')
-    db_passwd = os.environ.get('DB_PASSWD', 'qwerty_passwd')
-    db_host = os.environ.get('DB_HOST', 'localhost')
-    db_port = os.environ.get('DB_PORT', '3306')
+    db_name = config_data['db']['name']
+    db_user = config_data['db']['user']
+    db_passwd = config_data['db']['passwd']
+    db_host = config_data['db']['host']
+    db_port = config_data['db']['port']
     return db_name, db_user, db_passwd, db_host, db_port
 
 
 def get_log_path():
-    log_path = os.environ.get('LOG_FILE', '/data/log/qwerty.log')
-    return log_path
+    return config_data['log']['path']
