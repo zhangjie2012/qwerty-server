@@ -15,3 +15,10 @@ def ParamInvalidResponse():
         'status': HTTP_ERROR,
         'message': 'request param invalid'
     })
+
+
+def ObjectNotExistResponse():
+    return JsonResponse({
+        'status': HTTP_ERROR,
+        'message': 'object not exist'
+    })

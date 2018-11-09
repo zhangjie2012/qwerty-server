@@ -3,6 +3,7 @@ from . import views
 
 v1_urlpatterns = [
     path('query_blogs', views.query_blogs),
+    path('query_blog_detail', views.query_blog_detail),
 ]
 
 urlpatterns = [

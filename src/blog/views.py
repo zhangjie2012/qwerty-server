@@ -1,13 +1,14 @@
 import os
 import json
 import frontmatter
+import mistune
 
 from datetime import datetime
 from django.views.decorators.http import require_GET, require_POST
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.paginator import Paginator
 
 from utils.logger import logger
-from utils.http_tools import SuccessResponse, ParamInvalidResponse
+from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
 from .models import Category, Article
 
 
@@ -125,3 +126,36 @@ def query_blogs(request):
         'current_page_num': page_article.number,
         'total_pages': paginator.num_pages,
     })
+
+
+@require_GET
+def query_blog_detail(request):
+    try:
+        slug = request.GET['slug']
+    except KeyError:
+        logger.warning('param slug not exist')
+        return ParamInvalidResponse()
+
+    try:
+        article = Article.objects.get(slug=slug)
+    except Article.DoesNotExist:
+        logger.warning('slug article not exist|%s', slug)
+        return ObjectNotExistResponse()
+
+    data = {
+        'category': {
+            'name': article.category.name,
+            'slug': article.category.slug,
+        },
+        'title': article.title,
+        'cover_img': article.cover_img,
+        'img_copyright': article.img_copyright,
+        'abstract': article.abstract,
+        'content': mistune.markdown(article.content),
+        'publish_dt': article.publish_dt,
+        'update_dt': article.update_dt,
+    }
+
+    logger.debug('query blog detail|%s|%s', slug, article.title)
+
+    return SuccessResponse(data)
