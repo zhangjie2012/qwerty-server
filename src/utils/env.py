@@ -23,3 +23,7 @@ def get_db_config():
 
 def get_log_path():
     return config_data['log']['path']
+
+
+def get_site_info():
+    return config_data['site']
