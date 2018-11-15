@@ -4,6 +4,7 @@ import frontmatter
 import mistune
 
 from datetime import datetime
+from collections import defaultdict, OrderedDict
 from django.views.decorators.http import require_GET, require_POST
 from django.core.paginator import Paginator
 
@@ -157,5 +158,29 @@ def query_blog_detail(request):
     }
 
     logger.debug('query blog detail|%s|%s', slug, article.title)
+
+    return SuccessResponse(data)
+
+
+@require_GET
+def query_archive_blogs(request):
+    article_qs = Article.objects.exclude(
+        draft=True).values('title', 'slug', 'publish_dt')
+
+    # archive by year
+    year_2_articles = defaultdict(list)
+    for article in article_qs:
+        year = article['publish_dt'].year
+        year_2_articles[year].append(article)
+
+    # be order
+    data = []
+    for year, articles in year_2_articles.items():
+        data.append({
+            'year': year,
+            'articles': articles,
+        })
+
+    logger.debug('query archive blogs')
 
     return SuccessResponse(data)
