@@ -184,3 +184,24 @@ def query_archive_blogs(request):
     logger.debug('query archive blogs')
 
     return SuccessResponse(data)
+
+
+@require_GET
+def query_blog_categories(request):
+    category_qs = Category.objects.all()
+
+    data = []
+    for category in category_qs:
+        article_qs = category.article_set.exclude(draft=True).values(
+            'title', 'slug', 'publish_dt')
+        data.append({
+            'category': {
+                'name': category.name,
+                'slug': category.slug,
+            },
+            'articles': list(article_qs),
+        })
+
+    logger.debug('query blog categories')
+
+    return SuccessResponse(data)
