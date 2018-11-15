@@ -1,9 +1,13 @@
 # qwerty：技术人网站完整解决方案
 
+qwerty 只是一个服务端，目前有的客户端有：
+
++ [qwerty-client](https://github.com/zhangjie2012/qwerty-client)：基于 ant design pro 网页客户端，【官方版本】
+
 ## 核心功能
 
 + [ ] 主页
-+ [ ] 博客
++ [x] 博客
 + [ ] 乱记：按话题（Topic）不断追加记录，随学随记
 + [ ] 书籍：读书记录 + 简评
 + [ ] 简历：无需华丽，但有条理
