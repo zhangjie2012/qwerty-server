@@ -4,13 +4,14 @@ import frontmatter
 import mistune
 
 from datetime import datetime
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 from django.views.decorators.http import require_GET, require_POST
 from django.core.paginator import Paginator
 
 from utils.logger import logger
-from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
-from .models import Category, Article
+from utils.http_tools import SuccessResponse, \
+    ParamInvalidResponse, ObjectNotExistResponse, get_client_info
+from .models import Category, Article, Comment
 
 
 @require_POST
@@ -19,7 +20,7 @@ def import_jekyll_content(request):
         data = json.loads(request.body)
         dst_dir = data['dst_dir']
     except (KeyError, json.JSONDecodeError):
-        logger.warning('param invalid|%s', request.body)
+        logger.warning('param invalid|%s', request.body.decode('utf-8'))
         return ParamInvalidResponse()
 
     def get_file_paths(dst_dir):
@@ -143,6 +144,7 @@ def query_blog_detail(request):
         logger.warning('slug article not exist|%s', slug)
         return ObjectNotExistResponse()
 
+    comment_count = article.comment_set.filter(show=True).count()
     data = {
         'category': {
             'name': article.category.name,
@@ -155,10 +157,37 @@ def query_blog_detail(request):
         'content': mistune.markdown(article.content),
         'publish_dt': article.publish_dt,
         'update_dt': article.update_dt,
+        'comment_count': comment_count,
     }
 
-    logger.debug('query blog detail|%s|%s', slug, article.title)
+    logger.debug('query blog detail|%s|%s|%d',
+                 slug, article.title, comment_count)
 
+    return SuccessResponse(data)
+
+
+@require_GET
+def query_blog_comments(request):
+    try:
+        slug = request.GET['slug']
+    except KeyError:
+        logger.warning('param slug not exist')
+        return ParamInvalidResponse()
+
+    comment_qs = Comment.objects.filter(article__slug=slug, show=True).values(
+        'username', 'website', 'content', 'publish_dt'
+    )
+
+    data = []
+    for comment in comment_qs:
+        data.append({
+            'username': comment['username'],
+            'website': comment['website'],
+            'publish_dt': comment['publish_dt'],
+            'content': mistune.markdown(comment['content'])
+        })
+
+    logger.debug('query blog comment|%s|%d', slug, len(data))
     return SuccessResponse(data)
 
 
@@ -205,3 +234,39 @@ def query_blog_categories(request):
     logger.debug('query blog categories')
 
     return SuccessResponse(data)
+
+
+@require_POST
+def add_comment(request):
+    try:
+        body = json.loads(request.body)
+        slug = body['slug']
+        username = body['username']
+        website = body['website']
+        content = body['comment']
+
+        ip, browser, os, _ = get_client_info(request)
+    except (KeyError, json.JSONDecodeError):
+        logger.warning('param invalid|%s', request.body.decode('utf-8'))
+        return ParamInvalidResponse()
+
+    try:
+        article = Article.objects.get(slug=slug)
+    except Article.DoesNotExist:
+        logger.warning('article not exist|%s', slug)
+        return ObjectNotExistResponse()
+
+    comment = Comment.objects.create(
+        article=article,
+        username=username,
+        website=website,
+        content=content,
+        publish_dt=datetime.now(),
+        ipv4=ip,
+        browser=browser,
+        os=os
+    )
+
+    logger.info('add comment|%s|%s|%s', article.slug, article.title, comment.username)
+
+    return SuccessResponse()
