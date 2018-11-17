@@ -9,6 +9,7 @@ from django.views.decorators.http import require_GET, require_POST
 from django.core.paginator import Paginator
 
 from utils.logger import logger
+from utils.metrics import api_metric, article_visite_metric
 from utils.http_tools import SuccessResponse, \
     ParamInvalidResponse, ObjectNotExistResponse, get_client_info
 from .models import Category, Article, Comment
@@ -93,6 +94,7 @@ def import_jekyll_content(request):
 
 
 @require_GET
+@api_metric
 def query_blogs(request):
     page = int(request.GET.get('page', 1))
     per_count = int(request.GET.get('per_count', 10))
@@ -131,6 +133,7 @@ def query_blogs(request):
 
 
 @require_GET
+@api_metric
 def query_blog_detail(request):
     try:
         slug = request.GET['slug']
@@ -163,10 +166,15 @@ def query_blog_detail(request):
     logger.debug('query blog detail|%s|%s|%d',
                  slug, article.title, comment_count)
 
+    # metric
+    ip, _, _, _ = get_client_info(request)
+    article_visite_metric(slug, ip)
+
     return SuccessResponse(data)
 
 
 @require_GET
+@api_metric
 def query_blog_comments(request):
     try:
         slug = request.GET['slug']
@@ -192,6 +200,7 @@ def query_blog_comments(request):
 
 
 @require_GET
+@api_metric
 def query_archive_blogs(request):
     article_qs = Article.objects.exclude(
         draft=True).values('title', 'slug', 'publish_dt')
@@ -216,6 +225,7 @@ def query_archive_blogs(request):
 
 
 @require_GET
+@api_metric
 def query_blog_categories(request):
     category_qs = Category.objects.all()
 
@@ -237,6 +247,7 @@ def query_blog_categories(request):
 
 
 @require_POST
+@api_metric
 def add_comment(request):
     try:
         body = json.loads(request.body)
