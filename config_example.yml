@@ -1,3 +1,10 @@
+server:
+  debug: False
+  token: 'access_token'
+  allowed_hosts:
+    - 'localhost'
+    - '127.0.0.1'
+    - '0.0.0.0'
 site:
   title: 'qwerty'
   copyright: '2018'
@@ -9,4 +16,9 @@ db:
   host: '127.0.0.1'
   port: '3306'
 log:
-  path: '/data/log/qwerty.log'
+  level: 'DEBUG'
+  filepath: '/data/log/qwerty.log'
+  max_bytes: 5000000  # 5M
+  backup_count: 5
+backup:
+  path: '/data/backup/qwerty/'

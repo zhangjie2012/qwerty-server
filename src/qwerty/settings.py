@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-from utils import env
+from utils.env import server_config, db_config, log_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'czu5y2en*xi4(643ltl3opxc5hd22org*3xn-n_-odh=9^lf*c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = server_config.debug
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = server_config.allowed_hosts
 
 
 # Application definition
@@ -76,16 +76,14 @@ WSGI_APPLICATION = 'qwerty.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-db_name, db_user, db_passwd, db_host, db_port = env.get_db_config()
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': db_name,
-        'USER': db_user,
-        'PASSWORD': db_passwd,
-        'HOST': db_host,
-        'PORT': db_port,
+        'NAME': db_config.name,
+        'USER': db_config.user,
+        'PASSWORD': db_config.passwd,
+        'HOST': db_config.host,
+        'PORT': db_config.port,
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
@@ -105,9 +103,9 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': env.get_log_path(),
-            'maxBytes': 1024*1024*5,  # 5M
-            'backupCount': 5,
+            'filename': log_config.filepath,
+            'maxBytes': log_config.max_bytes,
+            'backupCount': log_config.backup_count,
             'formatter': 'verbose',
         },
     },

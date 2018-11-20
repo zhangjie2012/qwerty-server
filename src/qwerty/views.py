@@ -1,13 +1,18 @@
 from django.views.decorators.http import require_GET
 
-from utils import env
+from utils.env import site_config
 from utils.logger import logger
 from utils.http_tools import SuccessResponse
 
 
 @require_GET
+def health_check(request):
+    return SuccessResponse()
+
+
+@require_GET
 def query_site_info(request):
-    logger.debug('query site info|%s', env.get_site_info())
+    logger.debug('query site info|%s', site_config.to_dict())
     return SuccessResponse({
-        'site_info': env.get_site_info(),
+        'site_info': site_config.to_dict()
     })
