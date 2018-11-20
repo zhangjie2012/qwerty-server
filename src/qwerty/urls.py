@@ -26,4 +26,5 @@ urlpatterns = [
 
     path('site_info', views.query_site_info),
     path('blog/', include('blog.urls')),
+    path('datamgr/', include('datamgr.urls')),
 ]

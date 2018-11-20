@@ -24,6 +24,13 @@ def ObjectNotExistResponse():
     })
 
 
+def PermissionDeniedResponse():
+    return JsonResponse({
+        'status': HTTP_ERROR,
+        'message': 'permission denied'
+    })
+
+
 def get_client_info(request):
     """return: ip, browser, os, device
     """

@@ -11,6 +11,5 @@ v1_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('__import_jekyll_content', views.import_jekyll_content),
     path('api/v1/', include(v1_urlpatterns))
 ]
