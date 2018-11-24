@@ -6,6 +6,9 @@ class MicroBlog(models.Model):
     content = models.TextField(help_text='text, not markdown')
     publish_dt = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.content
+
     class Meta:
         verbose_name = 'MicroBlog'
         verbose_name_plural = 'MicroBlogs'
