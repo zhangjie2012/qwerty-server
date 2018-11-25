@@ -3,6 +3,7 @@ from . import views
 
 v1_urlpatterns = [
     path('query_topics', views.query_topics),
+    path('query_topic_comments', views.query_topic_comments),
 ]
 
 urlpatterns = [
