@@ -53,6 +53,7 @@ def query_topic_comments(request):
                 'slug': comment.article.slug,
             }
         comment_list.append({
+            'id': comment.id,
             'content': mistune.markdown(comment.content),
             'article': article,
             'create_dt': comment.create_dt,
@@ -63,6 +64,7 @@ def query_topic_comments(request):
     return SuccessResponse({
         'topic': {
             'id': topic.id,
+            'title': topic.title,
             'tags': topic.tags_dict(),
             'create_dt': topic.create_dt,
             'update_dt': topic.update_dt,
