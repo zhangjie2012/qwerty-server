@@ -43,7 +43,7 @@ def query_topic_comments(request):
         logger.warning('topics not exist|%s', id_)
         return ObjectNotExistResponse()
 
-    comment_qs = Comment.objects.filter(topic=topic)
+    comment_qs = Comment.objects.filter(topic=topic).order_by('create_dt')
     comment_list = []
     for comment in comment_qs:
         article = None
