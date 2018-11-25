@@ -30,6 +30,9 @@ class Topic(models.Model):
     def tags_admin_label(self):
         return ','.join(list(self.tags.values_list('name', flat=True)))
 
+    def tags_dict(self):
+        return list(self.tags.values('name', 'slug'))
+
     def __str__(self):
         return self.title
 

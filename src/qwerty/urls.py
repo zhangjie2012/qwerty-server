@@ -26,6 +26,7 @@ urlpatterns = [
 
     path('site_info', views.query_site_info),
     path('blog/', include('blog.urls')),
+    path('topic/', include('topic.urls')),
     path('microblog/', include('microblog.urls')),
     path('datamgr/', include('datamgr.urls')),
 ]
