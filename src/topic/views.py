@@ -47,10 +47,11 @@ def query_topic_comments(request):
     comment_list = []
     for comment in comment_qs:
         article = None
-        if comment.article is not None:
+        if comment.article is not None and not comment.article.draft:
             article = {
                 'title': comment.article.title,
                 'slug': comment.article.slug,
+                'publish_dt': comment.article.publish_dt,
             }
         comment_list.append({
             'id': comment.id,
