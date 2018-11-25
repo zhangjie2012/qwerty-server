@@ -5,6 +5,12 @@ class Tag(models.Model):
     name = models.CharField('name', max_length=100, unique=True)
     slug = models.CharField('slug', max_length=100, unique=True,
                             help_text='suggest: lower-case|-|0-9')
+    color = models.CharField(
+        'color',
+        max_length=10,
+        default='#2db7f5',
+        help_text="RGB value, eg: #108ee9, #87d068",
+    )
 
     def __str__(self):
         return self.name
@@ -31,7 +37,7 @@ class Topic(models.Model):
         return ','.join(list(self.tags.values_list('name', flat=True)))
 
     def tags_dict(self):
-        return list(self.tags.values('name', 'slug'))
+        return list(self.tags.values('name', 'slug', 'color'))
 
     def __str__(self):
         return self.title

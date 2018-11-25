@@ -3,8 +3,8 @@ from .models import Tag, Topic, Comment
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    fields = ('name', 'slug')
+    list_display = ('name', 'slug', 'color')
+    fields = ('name', 'slug', 'color')
 
 
 admin.site.register(Tag, TagAdmin)
