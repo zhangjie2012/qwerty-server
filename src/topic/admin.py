@@ -11,7 +11,7 @@ admin.site.register(Tag, TagAdmin)
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tags_admin_label', 'archive', 'create_dt', 'update_dt')
+    list_display = ('id', 'title', 'tags_admin_label', 'archive', 'create_dt', 'update_dt')
     fields = ('title', 'tags', 'archive')
 
 
@@ -19,7 +19,7 @@ admin.site.register(Topic, TopicAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('topic', 'article', 'create_dt')
+    list_display = ('id', 'topic', 'article', 'create_dt')
     fields = ('topic', 'content', 'article')
 
 
