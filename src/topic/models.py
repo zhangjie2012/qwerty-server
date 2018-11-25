@@ -58,6 +58,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.topic.title
 
+    def save(self, *args, **kwargs):
+        self.topic.save()  # update topic `update_dt`
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
