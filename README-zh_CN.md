@@ -44,9 +44,3 @@ qwerty 只是一个服务端，目前有的客户端有：
 2. `POST` 调用 API `/datamgr/import_jekyll_content` 执行导入操作，request body 为 `{"dst_dir": "_posts path"}`
 
 注意：qwerty 不支持静态资源，如果原博客使用了图片资源，请将图片提交到云存储上，然后手动修改文章内容使之生效。
-
-## 版本更新记录
-
-### v0.0.1
-
-只支持完整博客模块的版本。

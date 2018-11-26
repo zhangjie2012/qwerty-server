@@ -22,13 +22,12 @@ MySQL：
 
     ./manage.py runserver
 
-
 ## 生产环境
 
 1. 生成 docker 镜像：`docker build -t ${your_image_name} .`
 2. 宿主机创建配置文件和日志目录：
     + `cp ./config_example.yml /data/qwerty.yml`：修改站点配置
     + `mkdir /data/log`
-3. 启动容器：`docker run --name qwerty-server -it -d -p 8080:8080 -v /data/qwerty.yml:/etc/qwerty.yml -v /data/log/:/data/log/ --network ${your_image_name}`
+3. 启动容器：`docker run --name qwerty-server -it -d -p 8080:8080 -v /data/qwerty.yml:/etc/qwerty.yml -v /data/log/:/data/log/ -v /data/backup/:/data/backup/ --network qwerty ${your_image_name}`
 
 注意：如果 MySQL57 也是通过 docker 启动的话，注意设置 `network`。
