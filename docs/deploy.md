@@ -9,7 +9,7 @@
 MySQL：
 
     docker pull mysql:5.7
-    docker run -it -d --name qwerty-mysql --restart=always --network qwerty -e MYSQL_ROOT_PASSWORD=qwerty-pwd -p 3306:3306 mysql:5.7
+    docker run -it -d --name qwerty-mysql --restart=always --network qwerty -e MYSQL_ROOT_PASSWORD=qwerty-pwd  -p 3306:3306 mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     docker exec -it dae2c9b181a5 mysql -uroot -pqwerty-pwd -e "create database qwerty charset=utf8mb4"
 
 安装依赖：
