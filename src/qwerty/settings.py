@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'blog',
     'topic',
     'microblog',
+    'resume',
 ]
 
 MIDDLEWARE = [
