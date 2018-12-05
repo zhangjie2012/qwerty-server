@@ -6,7 +6,6 @@
 + [x] 博客（Blog）
 + [x] 话题（Topic）：一个轻量级的 Github issue 管理，用于类似笔记和 Wiki 形式的记录
 + [x] 微博（MicroBlog）：世界纷乱，不如一个人狂欢
-+ [ ] 书籍（Books）：读书记录 + 简评
 + [ ] 简历（Resume）：无需华丽，但有条理
 
 ## Web Client
