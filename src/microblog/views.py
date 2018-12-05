@@ -1,3 +1,5 @@
+import mistune
+
 from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 
@@ -27,7 +29,7 @@ def query_microblogs(request):
         microblog_list.append({
             'id': microblog.id,
             'cover_img': microblog.cover_img,
-            'content': microblog.content,
+            'content': mistune.markdown(microblog.content),
             'publish_dt': microblog.publish_dt,
         })
 
