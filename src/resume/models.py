@@ -19,6 +19,7 @@ class Job(models.Model):
     class Meta:
         verbose_name = 'job'
         verbose_name_plural = 'jobs'
+        ordering = ['-start_dt']
 
 
 class Education(models.Model):
@@ -38,3 +39,4 @@ class Education(models.Model):
     class Meta:
         verbose_name = 'Education'
         verbose_name_plural = 'Educations'
+        ordering = ['start_dt']
