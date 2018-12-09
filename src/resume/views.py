@@ -1,8 +1,9 @@
 import mistune
 
-from .models import Job, Education
-
+from utils.logger import logger
 from utils.http_tools import SuccessResponse
+
+from .models import Job, Education
 
 
 def query_resume(request):
@@ -32,6 +33,8 @@ def query_resume(request):
             'major': education.major,
             'course': education.course,
         })
+
+    logger.debug('query resume')
 
     return SuccessResponse({
         'job_list': job_list,
