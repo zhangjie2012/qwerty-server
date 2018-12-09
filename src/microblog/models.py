@@ -3,7 +3,7 @@ from django.db import models
 
 class MicroBlog(models.Model):
     cover_img = models.URLField(blank=True)
-    content = models.TextField(help_text='text, not markdown')
+    content = models.TextField(help_text='markdown')
     publish_dt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
