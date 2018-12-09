@@ -67,7 +67,18 @@ def query_blog_detail(request):
         logger.warning('slug article not exist|%s', slug)
         return ObjectNotExistResponse()
 
-    comment_count = article.comment_set.filter(show=True).count()
+    comment_qs = article.comment_set.filter(show=True).values(
+        'username', 'website', 'content', 'publish_dt'
+    )
+    comment_list = []
+    for comment in comment_qs:
+        comment_list.append({
+            'username': comment['username'],
+            'website': comment['website'],
+            'publish_dt': comment['publish_dt'],
+            'content': mistune.markdown(comment['content'])
+        })
+
     data = {
         'category': {
             'name': article.category.name,
@@ -80,11 +91,11 @@ def query_blog_detail(request):
         'content': mistune.markdown(article.content),
         'publish_dt': article.publish_dt,
         'update_dt': article.update_dt,
-        'comment_count': comment_count,
+        'comment_list': comment_list,
     }
 
     logger.debug('query blog detail|%s|%s|%d',
-                 slug, article.title, comment_count)
+                 slug, article.title, len(comment_list))
 
     # metric
     ip, _, _, _ = get_client_info(request)
