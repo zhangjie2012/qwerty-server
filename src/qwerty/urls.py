@@ -25,6 +25,7 @@ urlpatterns = [
     path('metrics', metrics.handler),
 
     path('site_info', views.query_site_info),
+    path('user_info', views.query_user_info),
     path('blog/', include('blog.urls')),
     path('topic/', include('topic.urls')),
     path('microblog/', include('microblog.urls')),

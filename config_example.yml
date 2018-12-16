@@ -8,7 +8,20 @@ server:
 site:
   title: 'qwerty'
   copyright: '2018'
-  ICP: ''
+  ICP: 'ICP'
+user:
+  nickname: 'nickname'
+  avatar: 'avatar_link'
+  email: 'xxx@yyy.com'
+  github: 'zhangjie2012'
+  social:
+    - label: 'label1'
+      link: 'link1'
+    - label: 'label2'
+      link: 'link2'
+  title: 'programmer'
+  career: 'game, finance'
+  city: 'Hangzhou'
 db:
   name: 'qwerty'
   user: 'root'
