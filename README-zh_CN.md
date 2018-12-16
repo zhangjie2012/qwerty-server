@@ -2,11 +2,11 @@
 
 ## 核心功能
 
-+ [ ] 主页
 + [x] 博客（Blog）
 + [x] 话题（Topic）：一个轻量级的 Github issue 管理，用于类似笔记和 Wiki 形式的记录
 + [x] 微博（MicroBlog）：世界纷乱，不如一个人狂欢
 + [x] 简历（Resume）：无需华丽，但有条理
++ [x] 关于（About）：个人介绍
 
 ## Web Client
 
@@ -19,6 +19,7 @@ qwerty 只是一个服务端，目前有的客户端有：
 ### 配置说明
 
 + `server`：服务配置，`token` 用于高危 API 的鉴权
++ `user`：个人信息配置
 + `site`：站点信息：名称，版权信息和 ICP 备案号
 + `db`：qwerty 使用 MySQL 做为存储，`db` 用于设置库名、账号密码等
 + `log`：日志存储位置，级别，以及 rotate 规则
