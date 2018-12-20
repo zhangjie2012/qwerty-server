@@ -53,6 +53,8 @@ class Comment(models.Model):
     article = models.ForeignKey('Article', on_delete=models.CASCADE)
 
     username = models.CharField(max_length=30)
+    email = models.EmailField(blank=True)
+    avatar = models.URLField(default='https://www.gravatar.com/avatar/00000000000000000000000000000000')
     website = models.CharField(max_length=100, blank=True)
     content = models.TextField()
     publish_dt = models.DateTimeField(auto_now_add=True)

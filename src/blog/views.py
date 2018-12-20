@@ -3,6 +3,7 @@ import mistune
 
 from datetime import datetime
 from collections import defaultdict
+from libgravatar import Gravatar
 from django.views.decorators.http import require_GET, require_POST
 from django.core.paginator import Paginator
 
@@ -68,12 +69,13 @@ def query_blog_detail(request):
         return ObjectNotExistResponse()
 
     comment_qs = article.comment_set.filter(show=True).values(
-        'username', 'website', 'content', 'publish_dt'
-    )
+        'username', 'avatar', 'website', 'content', 'publish_dt'
+    ).order_by('publish_dt')
     comment_list = []
     for comment in comment_qs:
         comment_list.append({
             'username': comment['username'],
+            'avatar': comment['avatar'],
             'website': comment['website'],
             'publish_dt': comment['publish_dt'],
             'content': mistune.markdown(comment['content'])
@@ -101,32 +103,6 @@ def query_blog_detail(request):
     ip, _, _, _ = get_client_info(request)
     article_visite_metric(slug, ip)
 
-    return SuccessResponse(data)
-
-
-@require_GET
-@api_metric
-def query_blog_comments(request):
-    try:
-        slug = request.GET['slug']
-    except KeyError:
-        logger.warning('param slug not exist')
-        return ParamInvalidResponse()
-
-    comment_qs = Comment.objects.filter(article__slug=slug, show=True).values(
-        'username', 'website', 'content', 'publish_dt'
-    )
-
-    data = []
-    for comment in comment_qs:
-        data.append({
-            'username': comment['username'],
-            'website': comment['website'],
-            'publish_dt': comment['publish_dt'],
-            'content': mistune.markdown(comment['content'])
-        })
-
-    logger.debug('query blog comment|%s|%d', slug, len(data))
     return SuccessResponse(data)
 
 
@@ -184,6 +160,7 @@ def add_comment(request):
         body = json.loads(request.body)
         slug = body['slug']
         username = body['username']
+        email = body['email']
         website = body['website']
         content = body['comment']
 
@@ -201,6 +178,8 @@ def add_comment(request):
     comment = Comment.objects.create(
         article=article,
         username=username,
+        email=email,
+        avatar=Gravatar(email).get_image(),
         website=website,
         content=content,
         publish_dt=datetime.now(),
