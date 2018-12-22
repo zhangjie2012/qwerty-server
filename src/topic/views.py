@@ -21,6 +21,7 @@ def query_topics(request):
             'tags': topic.tags_dict(),
             'create_dt': topic.create_dt,
             'update_dt': topic.update_dt,
+            'pin': topic.pin,
             'archive': topic.archive,
             'comment_count': topic.comment_set.count(),
         })

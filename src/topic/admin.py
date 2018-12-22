@@ -11,8 +11,8 @@ admin.site.register(Tag, TagAdmin)
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'tags_admin_label', 'archive', 'create_dt', 'update_dt')
-    fields = ('title', 'tags', 'archive')
+    list_display = ('id', 'title', 'tags_admin_label', 'archive', 'pin', 'update_dt')
+    fields = ('title', 'tags', 'archive', 'pin')
 
 
 admin.site.register(Topic, TopicAdmin)

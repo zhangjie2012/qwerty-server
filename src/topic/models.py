@@ -27,6 +27,12 @@ class Topic(models.Model):
     create_dt = models.DateTimeField('create datetime', auto_now_add=True)
     update_dt = models.DateTimeField('update datetime', auto_now=True)
 
+    pin = models.BooleanField(
+        'Pushpin topic',
+        default=False,
+        help_text='push pin topic will sort at first, note: if archived this field will invalid'
+    )
+
     archive = models.BooleanField(
         'archived topic',
         default=False,
@@ -45,7 +51,7 @@ class Topic(models.Model):
     class Meta:
         verbose_name = 'Topic'
         verbose_name_plural = 'Topics'
-        ordering = ('archive', '-update_dt')
+        ordering = ('archive', '-pin', '-create_dt')
 
 
 class Comment(models.Model):
