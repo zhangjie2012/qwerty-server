@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 
 from utils.logger import logger
 from utils.metrics import api_metric
+from utils.env import user_config
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
 
 from .models import MicroBlog
@@ -36,6 +37,7 @@ def query_microblogs(request):
     logger.debug('query microblogs|%s|%s|%s', page, per_count, len(microblog_list))
 
     return SuccessResponse({
+        'avatar': user_config.avatar,
         'microblog_list': microblog_list,
         'current_page_num': page_microblog.number,
         'total_pages': paginator.num_pages,
