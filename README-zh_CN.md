@@ -1,5 +1,9 @@
 # qwerty：技术人网站完整解决方案
 
+[English document](./README.md).
+
+qwerty demo 网站：<https://www.zhangjiee.com>，查看 [TODO](https://www.zhangjiee.com/topic/20)。
+
 ## 核心功能
 
 + [x] 博客（Blog）
@@ -14,33 +18,48 @@ qwerty 只是一个服务端，目前有的客户端有：
 
 + [qwerty-client](https://github.com/zhangjie2012/qwerty-client)：基于 ant design pro 网页客户端，【官方版本】
 
-## 使用教程
+## 部署
 
-### 配置说明
+qwerty 提供了 Dockerfile，推荐使用 [Docker](https://www.docker.com/) 部署。
 
-+ `server`：服务配置，`token` 用于高危 API 的鉴权
-+ `user`：个人信息配置
-+ `site`：站点信息：名称，版权信息和 ICP 备案号
-+ `db`：qwerty 使用 MySQL 做为存储，`db` 用于设置库名、账号密码等
-+ `log`：日志存储位置，级别，以及 rotate 规则
-+ `backup`：备份数据时，文件位置，见下方 数据迁移 -> 备份与恢复
+1. 后端存储使用 MySQL 5.7，需要准备 MySQL 服务
+1. `cp ./config_example.yml /etc/qwerty.yml`，根据你的站点信息修改配置：
+   + `server`：服务配置，`token` 用于高危 API 的鉴权
+   + `site`：站点信息，名称，版权信息和 ICP 备案号
+   + `user`：个人信息
+   + `db`：填写 MySQL 库名、账号密码等信息
+   + `log`：日志配置
+1. 创建宿主机日志目录：`mkdir -p /data/log`
+1. 构建镜像：`docker build -t ${image_name} .`
+1. 启动容器：`docker run --name qwerty-server -it -d -p 8080:8080 -v /etc/qwerty.yml:/etc/qwerty.yml -v /data/log/:/data/log/ ${image_name}`
+1. 测试服务：`curl 0.0.0.0:8080/health_check` -> `{"status": "ok"}` 表示成功
 
-### 本地调试与上线部署
-
-具体请查看 [部署文档](./docs/deploy.md)。
-
-### 数据迁移
-
-因为数据迁移属于高危操作，所以所有的 API 调用时需要填写 get 参数`token`，token 可以在 config 文件的 `server` 下设置。
-
-#### 备份与恢复
-
-1. 调用 API `/datamgr/backup_all` 备份数据，备份数据的路径在 config 文件的 `backup` 下配置（注意：备份时会清空文件夹）
-2. 恢复 API _TODO_
-
-#### 如何从 Jekyll 博客迁移到 qwerty？
+### 从 Jekyll 迁移到 qwerty
 
 1. 将 Jekyll 的 `_posts` 置于 qwerty server 可被访问的目录下
-2. `POST` 调用 API `/datamgr/import_jekyll_content` 执行导入操作，request body 为 `{"dst_dir": "_posts path"}`
+1. `POST` 调用 API `/datamgr/import_jekyll_content?token=${token}` 执行导入操作，request body 为 `{"dst_dir": "_posts path"}`
 
 注意：qwerty 不支持静态资源，如果原博客使用了图片资源，请将图片提交到云存储上，然后手动修改文章内容使之生效。
+
+## 本地开发
+
+推荐使用 Docker 开发与调试。
+
+容器网络：
+
+    docker network create -d bridge qwerty
+
+MySQL：
+
+    docker pull mysql:5.7
+    docker run -it -d --name qwerty-mysql --restart=always --network qwerty -e MYSQL_ROOT_PASSWORD=qwerty-pwd  -p 3306:3306 mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    docker exec -it qwerty-mysql mysql -uroot -pqwerty-pwd -e "create database qwerty charset=utf8mb4"
+
+安装依赖：
+
+    pip3 install -r requirements.txt
+
+启动：
+
+    CONFIG_FILE=./config_example.yml ./manage.py migrate
+    CONFIG_FILE=./config_example.yml ./manage.py runserver
