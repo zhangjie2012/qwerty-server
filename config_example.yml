@@ -33,5 +33,3 @@ log:
   filepath: '/data/log/qwerty.log'
   max_bytes: 5000000  # 5M
   backup_count: 5
-backup:
-  path: '/data/backup/qwerty/'

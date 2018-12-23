@@ -68,17 +68,11 @@ class LogConfig:
         self.backup_count = config['backup_count']
 
 
-class BackupConfig:
-    def init(self, config):
-        self.path = config['path']
-
-
 server_config = ServerConfig()
 user_config = UserConfig()
 site_config = SiteConfig()
 db_config = DBConfig()
 log_config = LogConfig()
-backup_config = BackupConfig()
 
 
 def load_config():
@@ -93,4 +87,3 @@ def load_config():
     site_config.init(config_data['site'])
     db_config.init(config_data['db'])
     log_config.init(config_data['log'])
-    backup_config.init(config_data['backup'])
