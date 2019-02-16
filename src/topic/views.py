@@ -18,7 +18,6 @@ def query_topics(request):
         topic_list.append({
             'id': topic.id,
             'title': topic.title,
-            'tags': topic.tags_dict(),
             'create_dt': topic.create_dt,
             'update_dt': topic.update_dt,
             'pin': topic.pin,
@@ -44,20 +43,12 @@ def query_topic_comments(request):
         logger.warning('topics not exist|%s', id_)
         return ObjectNotExistResponse()
 
-    comment_qs = Comment.objects.filter(topic=topic).order_by('create_dt')
+    comment_qs = Comment.objects.filter(topic=topic)
     comment_list = []
     for comment in comment_qs:
-        article = None
-        if comment.article is not None and not comment.article.draft:
-            article = {
-                'title': comment.article.title,
-                'slug': comment.article.slug,
-                'publish_dt': comment.article.publish_dt,
-            }
         comment_list.append({
             'id': comment.id,
             'content': mistune.markdown(comment.content),
-            'article': article,
             'create_dt': comment.create_dt,
         })
 
@@ -67,7 +58,6 @@ def query_topic_comments(request):
         'topic': {
             'id': topic.id,
             'title': topic.title,
-            'tags': topic.tags_dict(),
             'create_dt': topic.create_dt,
             'update_dt': topic.update_dt,
             'archive': topic.archive,
