@@ -10,7 +10,7 @@ class Topic(models.Model):
     pin = models.BooleanField(
         'Pushpin topic',
         default=False,
-        help_text='push pin topic will sort at first, note: if archived this field will invalid'
+        help_text='push pin topic will sort at first'
     )
 
     archive = models.BooleanField(
