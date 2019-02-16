@@ -14,7 +14,7 @@ admin.site.register(Topic, TopicAdmin)
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'topic', 'create_dt')
-    fields = ('topic', 'content', 'article')
+    fields = ('topic', 'content')
     search_fields = ['id', 'topic__title']
     list_per_page = 25
 
