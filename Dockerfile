@@ -12,7 +12,8 @@ WORKDIR /code
 COPY /uwsgi.ini /code
 COPY /src/ /code
 COPY /supervisor-app.conf /etc/supervisor/conf.d/
+COPY /startup.sh /
 
-EXPOSE 8080
+EXPOSE 80
 
-CMD ["supervisord", "-n"]
+ENTRYPOINT ["/bin/sh", "/startup.sh"]
