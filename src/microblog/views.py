@@ -4,7 +4,6 @@ from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator
 
 from utils.logger import logger
-from utils.metrics import api_metric
 from utils.env import user_config
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
 
@@ -12,7 +11,6 @@ from .models import MicroBlog
 
 
 @require_GET
-@api_metric
 def query_microblogs(request):
     page = int(request.GET.get('page', 1))
     per_count = int(request.GET.get('per_count', 25))
@@ -45,7 +43,6 @@ def query_microblogs(request):
 
 
 @require_GET
-@api_metric
 def query_microblog(request):
     try:
         id_ = int(request.GET['id'])

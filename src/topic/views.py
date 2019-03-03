@@ -2,7 +2,6 @@ import mistune
 
 from django.views.decorators.http import require_GET
 
-from utils.metrics import api_metric
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
 from utils.logger import logger
 
@@ -10,7 +9,6 @@ from .models import Topic, Comment
 
 
 @require_GET
-@api_metric
 def query_topics(request):
     topic_qs = Topic.objects.all()
     topic_list = []
@@ -29,7 +27,6 @@ def query_topics(request):
 
 
 @require_GET
-@api_metric
 def query_topic_comments(request):
     try:
         id_ = int(request.GET['id'])

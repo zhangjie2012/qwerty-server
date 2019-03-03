@@ -16,13 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from utils import metrics
 from . import views
 
 urlpatterns = [
     path('__adm/', admin.site.urls),
     path('health_check', views.health_check),
-    path('metrics', metrics.handler),
 
     path('site_info', views.query_site_info),
     path('user_info', views.query_user_info),
