@@ -93,8 +93,10 @@ def query_blog_detail(request):
         'comment_list': comment_list,
     }
 
-    logger.debug('query blog detail|%s|%s|%d',
-                 slug, article.title, len(comment_list))
+    ip, browser, os, device = get_client_info(request)
+    logger.debug('query blog detail|%s|%s|%d|%s|%s|%s|%s',
+                 slug, article.title, len(comment_list),
+                 ip, browser, os, device)
 
     return SuccessResponse(data)
 

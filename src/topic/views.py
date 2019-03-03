@@ -2,7 +2,8 @@ import mistune
 
 from django.views.decorators.http import require_GET
 
-from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
+from utils.http_tools import SuccessResponse, ParamInvalidResponse, \
+    ObjectNotExistResponse, get_client_info
 from utils.logger import logger
 
 from .models import Topic, Comment
@@ -49,7 +50,10 @@ def query_topic_comments(request):
             'create_dt': comment.create_dt,
         })
 
-    logger.debug('query topic comment|%d|%s|%d', id_, topic.title, len(comment_list))
+    ip, browser, os, device = get_client_info(request)
+    logger.debug('query topic comment|%d|%s|%d|%s|%s|%s|%s',
+                 id_, topic.title, len(comment_list),
+                 ip, browser, os, device,)
 
     return SuccessResponse({
         'topic': {
