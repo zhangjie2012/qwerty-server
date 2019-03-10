@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 
 
 class Category(models.Model):
@@ -44,6 +45,11 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def add_pv_atomic(self):
+        self.pv = F('pv') + 1
+        self.save()
+        self.refresh_from_db()
 
     class Meta:
         verbose_name = 'Article'

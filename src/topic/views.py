@@ -1,7 +1,6 @@
 import mistune
 
 from django.views.decorators.http import require_GET
-from django.db.models import F
 
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, \
     ObjectNotExistResponse, get_client_info
@@ -38,11 +37,11 @@ def query_topic_comments(request):
 
     try:
         topic = Topic.objects.get(id=id_)
-        topic.pv = F('pv') + 1
-        topic.save()
     except Topic.DoesNotExist:
         logger.warning('topics not exist|%s', id_)
         return ObjectNotExistResponse()
+
+    topic.add_pv_atomic()
 
     comment_qs = Comment.objects.filter(topic=topic).order_by('create_dt')
     comment_list = []

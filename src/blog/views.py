@@ -6,7 +6,6 @@ from collections import defaultdict
 from libgravatar import Gravatar
 from django.views.decorators.http import require_GET, require_POST
 from django.core.paginator import Paginator
-from django.db.models import F
 
 from utils.logger import logger
 from utils.http_tools import SuccessResponse, \
@@ -62,11 +61,11 @@ def query_blog_detail(request):
 
     try:
         article = Article.objects.get(slug=slug)
-        article.pv = F('pv') + 1
-        article.save()
     except Article.DoesNotExist:
         logger.warning('slug article not exist|%s', slug)
         return ObjectNotExistResponse()
+
+    article.add_pv_atomic()
 
     comment_qs = article.comment_set.filter(show=True).values(
         'username', 'avatar', 'website', 'content', 'publish_dt'
