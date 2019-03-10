@@ -1,6 +1,7 @@
 import mistune
 
 from django.views.decorators.http import require_GET
+from django.db.models import F
 
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, \
     ObjectNotExistResponse, get_client_info
@@ -37,6 +38,8 @@ def query_topic_comments(request):
 
     try:
         topic = Topic.objects.get(id=id_)
+        topic.pv = F('pv') + 1
+        topic.save()
     except Topic.DoesNotExist:
         logger.warning('topics not exist|%s', id_)
         return ObjectNotExistResponse()
@@ -62,6 +65,7 @@ def query_topic_comments(request):
             'create_dt': topic.create_dt,
             'update_dt': topic.update_dt,
             'archive': topic.archive,
+            'pv': topic.pv,
         },
         'comment_list': comment_list,
     })

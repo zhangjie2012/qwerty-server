@@ -19,6 +19,8 @@ class Topic(models.Model):
         help_text='archived topic means this\'s close topic, will not update'
     )
 
+    pv = models.IntegerField('page views', default=0)
+
     def __str__(self):
         return self.title
 

@@ -40,6 +40,8 @@ class Article(models.Model):
     draft = models.BooleanField(default=False, db_index=True,
                                 help_text='draft article will hidden')
 
+    pv = models.IntegerField('page views', default=0)
+
     def __str__(self):
         return self.title
 
