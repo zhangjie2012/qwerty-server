@@ -1,24 +1,27 @@
 # qwerty: a full website solution for programmer
 
-Qwerty demo site: <https://www.zhangjiee.com>. Checkout [TODO list](https://www.zhangjiee.com/topic/20).
+
+qwerty demo site: <https://www.zhangjiee.com>. Checkout [TODO list](https://www.zhangjiee.com/topic/20).
 
 ## Features
 
 + [x] Blog
-+ [x] Topic: a lightweight github issue manager, like notes, wiki.
++ [x] Topic: a lightweight github issue manager, like notes, wiki
 + [x] MicroBlog: a micro blog
 + [x] Resume
 + [x] About: personal info
 
-## Web Client
+## qwerty stack
 
-Qwerty is a back-end server, you need a web client, qwerty support a official [qwerty-client](https://github.com/zhangjie2012/qwerty-client) (based on ant design pro). If you don't like it, you can coding by yourself.
+- this qwerty is just an __api server__, you need a __web client__.
+
+    qwerty support a official [qwerty-client](https://github.com/zhangjie2012/qwerty-client) (based on ant design pro). If you don't like it, you can coding by yourself.
 
 ## Deploy
 
-Qwerty support Dockerfile, I also recommend use [docker](https://www.docker.com/) deploy service.
+qwerty support Dockerfile, I also recommend use [docker](https://www.docker.com/) deploy service.
 
-1. back-end need MySQL-5.7, you need prepare one
+1. back-end need MySQL-5.7, you need prepare install
 1. `cp ./config_example.yml /etc/qwerty.yml`, then modify it according your site information
 1. create log directory: `mkdir -p /data/log`
 1. build image: `docker build -t ${image_name} .`
@@ -33,21 +36,14 @@ Test service run success, `curl 0.0.0.0:8080/health_check`, you will get `{"stat
 
 ## Develop
 
-I recommand use docker.
+Install ENV:
 
-Create docker network:
-
-    docker network create -d bridge qwerty
-
-Install MySQL-5.7:
-
-    docker pull mysql:5.7
-    docker run -it -d --name qwerty-mysql --restart=always --network qwerty -e MYSQL_ROOT_PASSWORD=qwerty-pwd  -p 3306:3306 mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    docker exec -it qwerty-mysql mysql -uroot -pqwerty-pwd -e "create database qwerty charset=utf8mb4"
-
-Install dependent library:
-
-    pip3 install -r requirements.txt
+1. install MySQL-5.7: `apt install mysql-server`
+1. create database ant grant:
+   - `create database qwerty charset=utf8mb4`
+   - `grant all privileges on qwerty.* to qwerty_user@'localhost' identified by 'qwerty_password'`
+1. install server dependent python3 libraries: `pip3 install -r requirements.txt`
+1. set configure, copy config and replece config by you need: `cp config_example.yml config_server.yml`
 
 Run:
 
