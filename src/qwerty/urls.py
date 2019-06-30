@@ -22,8 +22,9 @@ urlpatterns = [
     path('__adm/', admin.site.urls),
     path('health_check', views.health_check),
 
-    path('site_info', views.query_site_info),
-    path('user_info', views.query_user_info),
+    path('site', views.Site()),
+    path('user', views.User()),
+
     path('blog/', include('blog.urls')),
     path('topic/', include('topic.urls')),
     path('microblog/', include('microblog.urls')),

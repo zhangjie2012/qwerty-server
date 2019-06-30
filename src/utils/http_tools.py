@@ -10,6 +10,11 @@ def SuccessResponse(data=None):
         if data is None else JsonResponse({'status': HTTP_OK, 'data': data})
 
 
+def ErrorResponse(data=None):
+    return JsonResponse({'status': HTTP_ERROR}) \
+        if data is None else JsonResponse({'status': HTTP_ERROR, 'message': data})
+
+
 def ParamInvalidResponse():
     return JsonResponse({
         'status': HTTP_ERROR,
