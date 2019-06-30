@@ -80,7 +80,7 @@ def load_config():
 
     config_path = os.environ.get('CONFIG_FILE', '/etc/qwerty.yml')
     s = open(config_path, 'r')
-    config_data = yaml.load(s)
+    config_data = yaml.safe_load(s)
 
     server_config.init(config_data['server'])
     user_config.init(config_data['user'])
