@@ -2,8 +2,8 @@ from django.urls import path, include
 from . import views
 
 v1_urlpatterns = [
-    path('query_microblogs', views.query_microblogs),
-    path('query_microblog', views.query_microblog),
+    path('microblogs', views.MicroBlogs()),
+    path('microblogs/<int:id>', views.MicroBlogHandler())
 ]
 
 urlpatterns = [
