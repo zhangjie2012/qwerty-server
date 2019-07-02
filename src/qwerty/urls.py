@@ -29,5 +29,4 @@ urlpatterns = [
     path('topic/', include('topic.urls')),
     path('microblog/', include('microblog.urls')),
     path('resume/', include('resume.urls')),
-    path('datamgr/', include('datamgr.urls')),
 ]
