@@ -39,6 +39,7 @@ class MicroBlogs(RESTful):
             'microblog_list': microblog_list,
             'current_page_num': page_microblog.number,
             'total_pages': paginator.num_pages,
+            'total_count': paginator.count,
         })
 
 
