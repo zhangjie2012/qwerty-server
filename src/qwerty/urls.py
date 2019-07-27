@@ -26,6 +26,7 @@ urlpatterns = [
     path('user', views.User()),
 
     path('blog/', include('blog.urls')),
+    path('snippet/', include('snippet.urls')),
     path('topic/', include('topic.urls')),
     path('microblog/', include('microblog.urls')),
     path('resume/', include('resume.urls')),
