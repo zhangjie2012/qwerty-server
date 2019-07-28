@@ -16,7 +16,14 @@ class Snippet(models.Model):
     def __str__(self):
         return self.title
 
-    def to_dist(self):
+    def to_simple_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'pl_tag': self.pl_tag,
+        }
+
+    def to_dict(self):
         return {
             'id': self.id,
             'title': self.title,
