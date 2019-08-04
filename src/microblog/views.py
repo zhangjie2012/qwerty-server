@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 from utils.logger import logger
 from utils.env import user_config
-from utils.http_tools import SuccessResponse, ParamInvalidResponse, ObjectNotExistResponse
+from utils.http_tools import SuccessResponse, ObjectNotExistResponse
 from utils.restful import RESTful
 
 from .models import MicroBlog
