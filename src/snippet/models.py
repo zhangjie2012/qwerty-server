@@ -1,5 +1,4 @@
-import mistune
-
+from utils.md_render import md_render
 from django.db import models
 
 hljs_link = 'https://github.com/conorhastings/react-syntax-highlighter/blob/master/AVAILABLE_LANGUAGES_PRISM.MD'
@@ -27,7 +26,7 @@ class Snippet(models.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'desc': '' if len(self.desc) == 0 else mistune.markdown(self.desc),
+            'desc': '' if len(self.desc) == 0 else md_render(self.desc),
             'code': self.code,
             'pl_tag': self.pl_tag,
             'publish_dt': self.publish_dt,

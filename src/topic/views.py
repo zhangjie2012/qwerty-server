@@ -1,5 +1,4 @@
-import mistune
-
+from utils.md_render import md_render_with_hl
 from utils.http_tools import SuccessResponse, ParamInvalidResponse, \
     ObjectNotExistResponse, get_client_info
 from utils.restful import RESTful
@@ -47,7 +46,7 @@ class Comments(RESTful):
         for comment in comment_qs:
             comment_list.append({
                 'id': comment.id,
-                'content': mistune.markdown(comment.content),
+                'content': md_render_with_hl(comment.content),
                 'create_dt': comment.create_dt,
             })
 

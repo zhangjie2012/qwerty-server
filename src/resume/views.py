@@ -1,5 +1,4 @@
-import mistune
-
+from utils.md_render import md_render
 from utils.logger import logger
 from utils.http_tools import SuccessResponse
 from utils.restful import RESTful
@@ -18,9 +17,9 @@ class ResumeHandler(RESTful):
                 'start_dt': job.start_dt,
                 'end_dt': job.end_dt,
                 'title': job.title,
-                'product': mistune.markdown(job.product),
+                'product': md_render(job.product),
                 'duties': job.duties,
-                'tech_stack': mistune.markdown(job.tech_stack),
+                'tech_stack': md_render(job.tech_stack),
             })
 
         education_qs = Education.objects.all()

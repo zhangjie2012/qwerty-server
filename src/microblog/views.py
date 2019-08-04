@@ -1,7 +1,6 @@
-import mistune
-
 from django.core.paginator import Paginator
 
+from utils.md_render import md_render_with_hl
 from utils.logger import logger
 from utils.env import user_config
 from utils.http_tools import SuccessResponse, ObjectNotExistResponse
@@ -28,7 +27,7 @@ class MicroBlogs(RESTful):
             microblog_list.append({
                 'id': microblog.id,
                 'cover_img': microblog.cover_img,
-                'content': mistune.markdown(microblog.content),
+                'content': md_render_with_hl(microblog.content),
                 'publish_dt': microblog.publish_dt,
             })
 

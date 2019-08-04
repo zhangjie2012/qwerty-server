@@ -1,11 +1,11 @@
 import json
-import mistune
 
 from datetime import datetime
 from collections import defaultdict
 from libgravatar import Gravatar
 from django.core.paginator import Paginator
 
+from utils.md_render import md_render_with_hl
 from utils.logger import logger
 from utils.http_tools import SuccessResponse, \
     ParamInvalidResponse, ObjectNotExistResponse, get_client_info
@@ -71,7 +71,7 @@ class Blog(RESTful):
                 'avatar': comment['avatar'],
                 'website': comment['website'],
                 'publish_dt': comment['publish_dt'],
-                'content': mistune.markdown(comment['content'])
+                'content': md_render_with_hl(comment['content'])
             })
 
         data = {
@@ -83,7 +83,7 @@ class Blog(RESTful):
             'cover_img': article.cover_img,
             'img_copyright': article.img_copyright,
             'abstract': article.abstract,
-            'content': mistune.markdown(article.content),
+            'content': md_render_with_hl(article.content),
             'publish_dt': article.publish_dt,
             'update_dt': article.update_dt,
             'pv': article.pv,
