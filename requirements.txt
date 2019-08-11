@@ -1,4 +1,4 @@
-Django==2.2.3
+Django>=2.2.3
 Pygments==2.4.2
 libgravatar==0.2.3
 mistune==0.8.3
